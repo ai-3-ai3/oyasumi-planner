@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#f7f8f5" />
+<title>おやすみ設計室 | 毎月シフトカレンダー</title>
+<style>
+:root{--bg:#f6f7f4;--ink:#24332f;--muted:#6a7974;--line:#e2e8e3;--white:#fff;--mint:#e1f1e7;--mintInk:#27634d;--amber:#fae6c7;--amberInk:#88551b;--rose:#f7dce0;--roseInk:#97394b;--blue:#d9e9f9;--blueInk:#275c94;--shadow:0 8px 28px rgba(35,61,46,.055)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;font-size:15px;line-height:1.5}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #8ab5d8;outline-offset:2px}
+.wrap{width:min(1040px,100% - 26px);margin:0 auto;padding:22px 0 42px}.top{display:flex;align-items:center;gap:12px;margin-bottom:20px}.logo{width:47px;height:47px;border-radius:16px;display:grid;place-items:center;background:#dceee3;font-size:25px}.top h1{margin:0;font-size:25px;letter-spacing:-.035em}.top p{margin:0;color:var(--muted);font-size:12px}.top small{margin-left:auto;color:var(--muted)}.shell{display:grid;grid-template-columns:minmax(0,1.23fr) minmax(310px,.77fr);align-items:start;gap:14px}.panel{background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:19px;padding:18px;margin-bottom:14px}.sectionTitle{font-size:18px;font-weight:800;margin:0 0 12px}.sub{font-size:12px;color:var(--muted)}.monthHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.monthHead h2{margin:0;font-size:23px;letter-spacing:-.03em}.yearMonth{font-size:12px;color:var(--muted)}.monthControl{display:flex;gap:6px;align-items:center}.square{width:38px;height:38px;display:grid;place-items:center;background:#f3f6f3;border:1px solid var(--line);border-radius:10px;font-size:22px;line-height:1}.monthPicker{max-width:150px;background:#f3f6f3;border:1px solid var(--line);border-radius:10px;padding:8px 5px;color:var(--ink)}.legend{display:flex;gap:9px 14px;flex-wrap:wrap;margin-bottom:14px;font-size:12px;color:var(--muted)}.legend span{display:inline-flex;gap:5px;align-items:center}.dot{width:11px;height:11px;display:inline-block;border-radius:3px;background:#eff2ef}.dot.rest{background:var(--mint)}.dot.extra{background:var(--amber)}.dot.workend{background:var(--rose)}.dot.selected{background:var(--blue)}.dot.idea{background:#e4ddfb;border:1px solid #7667b9}
+.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.dow{text-align:center;padding:3px 0 8px;font-size:12px;font-weight:800;color:var(--muted)}.dow:first-child{color:#b75564}.dow:nth-child(7){color:#42699c}.day{position:relative;min-height:70px;border:2px solid transparent;border-radius:12px;background:#f3f5f3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:6px 2px;color:var(--ink);transition:border-color .1s}.day .num{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}.day .status{font-size:10px;white-space:nowrap}.day.rest{background:var(--mint);color:var(--mintInk)}.day.extra{background:var(--amber);color:var(--amberInk)}.day.workend{background:var(--rose);color:var(--roseInk)}.day.outside{background:#f8faf8;opacity:.5}.day.highlight{border-color:#3875a5;box-shadow:inset 0 0 0 1px #3875a5}.day.highlight:not(.rest):not(.extra):not(.workend){background:var(--blue);color:var(--blueInk)}.day .edge{font-size:9px;font-weight:800;color:#285985;line-height:1.2}.day:hover{filter:brightness(.98)}.day.outside:hover{opacity:1}
+.day .wish{position:absolute;top:1px;right:2px;font-size:8px;border-radius:4px;padding:0 3px;background:#fff;opacity:.9;font-weight:800;color:#6756a5}
+.day.idea-rest{outline:3px dashed #7863ad;outline-offset:-4px}.day.idea-work{outline:3px dashed #cc8064;outline-offset:-4px}
+.day .idea-label{font-size:9px;font-weight:900;color:#6653a8}.day.idea-work .idea-label{color:#a95335}
+.advice{background:#f7f5ff;border:1px solid #e5def6;border-radius:13px;padding:13px;margin-top:13px}.advice h3{font-size:16px;margin:0 0 6px}.advice p{font-size:12px;margin:4px 0;color:#625d75}
+.proposals{display:grid;gap:8px;margin-top:10px}.proposal{background:#fff;border:1px solid #e5ddf6;padding:10px;border-radius:12px}.proposal.best{border:2px solid #7b70b0;background:#fffefd}.proposal h4{font-size:13px;margin:0 0 5px}.proposal .change{display:inline-block;border-radius:6px;padding:3px 7px;margin:2px 3px 3px 0;background:#e1f1e7;color:#27634d;font-size:12px;font-weight:800}.proposal .change.work{background:#f7dce0;color:#97394b}.proposal button{margin-top:8px;width:100%;padding:10px;border-radius:9px;background:#5a548f;color:white;border:0;font-weight:800}.proposal button:focus-visible{outline:3px solid #a99cdb}
+.wish-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.wish-list button{border:1px solid #cec4ec;background:#fff;border-radius:8px;padding:5px 8px;font-size:11px;color:#61548f}.advice .empty{background:#fff;border-radius:8px;padding:10px;font-size:12px}
+.hint{margin:12px 0 0;font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:15px}.stat{background:#f5f8f5;text-align:center;padding:12px 4px;border-radius:12px}.stat b{display:block;font-size:25px;line-height:1.15}.stat small{color:var(--muted);font-size:11px}.stat strong{font-size:11px;color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;font-size:12px;font-weight:750;margin-bottom:5px}.field input,.field select{width:100%;padding:10px 8px;border:1px solid #d9e1db;border-radius:10px;background:#fafcfb;color:var(--ink)}.buttons{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0 0}.primary{background:#296e56;border:1px solid #296e56;color:white;font-weight:750;padding:12px 18px;border-radius:12px}.secondary{background:white;border:1px solid #ccd8d0;color:var(--ink);font-weight:650;padding:11px 15px;border-radius:12px}.mini{padding:9px 12px}.buttonRow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0}.rangeTitle{font-size:16px;font-weight:800;text-align:center}.rangeTitle small{display:block;font-weight:500;font-size:11px;color:var(--muted)}.rangeSlider{width:100%;accent-color:#347dab;margin:5px 0 15px}.weekStrip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.wk{border-radius:9px;background:#f2f4f2;text-align:center;padding:9px 1px;min-width:0}.wk.rest{background:var(--mint);color:var(--mintInk)}.wk b{font-size:12px;display:block;font-variant-numeric:tabular-nums}.wk small{font-size:10px;display:block}.wk em{font-style:normal;font-size:11px;font-weight:800}.result{margin-top:13px;border-radius:12px;padding:12px;text-align:center;background:var(--mint);color:var(--mintInk)}.result.bad{background:#fce9e8;color:#a33c43}.result b{font-size:17px}.result p{margin:2px 0 0;font-size:12px}.summary{border-top:1px solid var(--line);margin-top:14px;padding-top:13px}.summary.ok{color:var(--mintInk)}.summary.notok{color:#ab4d36}.summary h3{font-size:14px;margin:0 0 4px}.summary p{font-size:12px;margin:0;color:var(--muted)}.badWindows{margin-top:8px;font-size:12px}.badWindows button{padding:3px 7px;margin:3px;border:1px solid #ebc7c3;background:#fff3f1;border-radius:6px;color:#994e45}.triples{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.triple{background:#eaf3ef;border-radius:999px;padding:4px 10px;font-size:12px;color:var(--mintInk);font-weight:650}
+.note{padding:11px 13px;background:#f6f8f5;border:1px solid var(--line);border-radius:11px;margin-top:10px;font-size:12px;color:var(--muted)}.notif{background:#fff4df;color:#87551b;border-radius:10px;padding:11px 13px;font-size:12px;margin-top:12px;display:none}.notif.on{display:block}.helper{font-size:12px;color:var(--muted);margin-top:7px}.smallButtons{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.smallButtons button{font-size:12px;border-radius:9px;padding:9px 11px}.footer{text-align:center;font-size:12px;color:var(--muted);padding:9px}.footer b{color:var(--ink)}
+@media(max-width:760px){.shell{grid-template-columns:1fr}.wrap{width:min(540px,100% - 20px);padding-top:15px}.top h1{font-size:21px}.top small{display:none}.panel{padding:13px;border-radius:15px;margin-bottom:10px}.day{min-height:62px;border-radius:9px}.day .num{font-size:16px}.day .status{font-size:9px}.monthPicker{width:126px}.monthHead h2{font-size:21px}.stats{margin-top:12px}.stat b{font-size:23px}}
+@media(max-width:365px){.day{min-height:54px}.day .status{font-size:8px}.calendar{gap:3px}.monthControl{gap:4px}.square{width:31px;height:34px}.monthPicker{width:116px}.wk b{font-size:11px}}
+@media print{body{background:white}.wrap{padding:0}.shell{display:block}.panel{box-shadow:none;break-inside:avoid}.monthControl,.buttons,.smallButtons,.buttonRow button,.rangeSlider,.hint,.footer{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="logo">🌿</div><div><h1>おやすみ設計室</h1><p>毎月使える、わが家の勤務カレンダー</p></div><small>SHIFT & REST PLANNER</small></header>
+<div class="shell">
+<main>
+<section class="panel"><div class="monthHead"><div><div class="yearMonth">勤務スケジュール</div><h2 id="monthHeading">2026年11月</h2></div><div class="monthControl"><button class="square" id="prevMonth" aria-label="前月">‹</button><input class="monthPicker" type="month" id="monthPicker" aria-label="月を選択" value="2026-11"><button class="square" id="nextMonth" aria-label="翌月">›</button></div></div>
+<div class="legend"><span><i class="dot"></i>出勤</span><span><i class="dot rest"></i>土日休み</span><span><i class="dot idea"></i>調整候補</span><span><i class="dot extra"></i>追加休み</span><span><i class="dot workend"></i>休日出勤</span><span><i class="dot selected"></i>7日間の範囲</span></div>
+<div id="calendar" class="calendar" aria-label="勤務カレンダー"></div><p class="hint">👆 日付をタップして希望休を指定！ 必要な出勤日の入れ替え候補を下に表示するよ。前後の月も変更OK。</p>
+<div class="stats"><div class="stat"><b id="worked">—</b><small>出勤日数</small></div><div class="stat"><b id="rested">—</b><small>休日日数</small></div><div class="stat"><b id="extraDays">—</b><small>平日の休み</small></div></div>
+<div id="advice" class="advice" aria-live="polite"><h3>💡 この日に休むなら？</h3><p>希望休を選ぶと、ここにおすすめが出るよ。</p></div>
+</section>
+<section class="panel"><h2 class="sectionTitle">🔎 ここからここまで、7日間</h2><p class="sub">前後の月も含めて、どこから数えても休みが2日以上あるかチェック。</p>
+<div class="buttonRow"><button class="secondary mini" id="rangePrev">‹ 前日</button><div class="rangeTitle" id="rangeTitle">—<small>連続7日間</small></div><button class="secondary mini" id="rangeNext">翌日 ›</button></div><input id="rangeSlider" class="rangeSlider" type="range" min="0" max="35" value="20" aria-label="確認する7日間の開始日"><div id="weekStrip" class="weekStrip"></div><div id="rangeResult" class="result"><b>確認中</b></div>
+<div class="buttons"><button class="secondary mini" id="leftBoundary">← 10月→11月</button><button class="secondary mini" id="rightBoundary">11月→12月 →</button></div>
+<div id="validation" class="summary"></div></section>
+</main>
+<aside>
+<section class="panel"><h2 class="sectionTitle">⚙️ シフトを自動で作る</h2><div class="two"><div class="field"><label for="target">目標の出勤日数</label><input id="target" type="number" min="1" max="31" inputmode="numeric" value="20"></div><div class="field"><label for="sunCount">日曜出勤を何日にする？</label><select id="sunCount"><option value="0">0日（全て休み）</option><option value="1" selected>1日</option><option value="2">2日</option><option value="3">3日</option><option value="4">4日</option><option value="5">5日</option></select></div></div>
+<p class="helper">土曜日は休み、祝日は通常出勤として自動計算。できるだけ<strong>3連休</strong>を作り、4連休以上は優先しないよ。</p><div class="buttons"><button class="primary" id="generate">✨ 3連休優先で自動作成</button></div><div class="notif" id="notice" role="status"></div>
+<div id="threeDayInfo"></div></section>
+<section class="panel"><h2 class="sectionTitle">🗓️ 使い方と保存</h2><p class="sub">毎月、◀ ▶ で月を動かして使えるよ。自動作成後も、予定に合わせて日付をタップして変更OK。変更するたびに7日間ルールを再計算するよ。</p><div class="note">💾 変更内容はこのブラウザに保存を試みるよ。スマホのブラウザやファイルの開き方によって保存できない場合があるから、時々「バックアップ保存」を使ってね。</div><div class="smallButtons"><button class="secondary" id="backup">⬇ バックアップ保存</button><button class="secondary" id="restore">⬆ バックアップ読込</button><button class="secondary" id="reset">↩ この月を初期化</button></div><input type="file" id="importFile" accept=".json,application/json" hidden>
+<div class="smallButtons"><button class="secondary" id="print">🖨 印刷・PDFに保存</button></div></section>
+</aside>
+</div><div class="footer">🌱 <b>おやすみ設計室</b> — インターネットがなくても動く、1ファイルのシフト表。</div>
+</div>
+<script>
+(()=>{'use strict';
+const STORAGE_KEY='oyasumi_planner_v1';
+const weekdays=['日','月','火','水','木','金','土'];
+const byId=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+const dUTC=(y,m,d)=>new Date(Date.UTC(y,m,d));
+const shift=(d,by)=>dUTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()+by);
+const keyDate=d=>`${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`;
+const keyMonth=(y,m)=>`${y}-${pad(m+1)}`;
+const fmt=d=>`${d.getUTCMonth()+1}/${d.getUTCDate()}`;
+const verbose=d=>`${d.getUTCMonth()+1}月${d.getUTCDate()}日`;
+const numDays=(y,m)=>dUTC(y,m+1,0).getUTCDate();
+const monthBounds=(y,m)=>({first:dUTC(y,m,1),last:dUTC(y,m+1,0)});
+function safelyRead(){try{const raw=JSON.parse(localStorage.getItem(STORAGE_KEY));if(raw&&raw.version===1&&typeof raw.plans==='object'&&raw.plans&&typeof raw.configs==='object')return {...raw,wishes:raw.wishes&&typeof raw.wishes==='object'?raw.wishes:{}};}catch(_){}return {version:1,plans:{},configs:{},wishes:{}};}
+let data=safelyRead();
+let ym={y:2026,m:10},rangeIndex=20,noticeText='',storageOK=true,recommendations=[];
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));storageOK=true;}catch(_){storageOK=false;}}
+function config(){return data.configs[keyMonth(ym.y,ym.m)]||{target:20,suns:1};}
+function setConfig(cfg){data.configs[keyMonth(ym.y,ym.m)]=cfg;save();}
+function getState(d,override=null){const k=keyDate(d);if(override&&Object.prototype.hasOwnProperty.call(override,k))return override[k];if(Object.prototype.hasOwnProperty.call(data.plans,k))return data.plans[k];return d.getUTCDay()===0||d.getUTCDay()===6?'R':'W';}
+function isRest(d,override=null){return getState(d,override)==='R';}
+function inspect(override=null){const {first,last}=monthBounds(ym.y,ym.m);const winStart=shift(first,-6);const bad=[];const runs=[];let count=0;for(let start=winStart;start.getTime()<=last.getTime();start=shift(start,1)){let rests=0;for(let i=0;i<7;i++)rests+=isRest(shift(start,i),override)?1:0;const item={start,rest:rests,index:count++};if(rests<2)bad.push(item);}const scanStart=shift(first,-6),scanLast=shift(last,6);let current=null;for(let d=scanStart;d.getTime()<=shift(scanLast,1).getTime();d=shift(d,1)){if(d<=scanLast&&isRest(d,override)){if(!current)current={start:d,end:d,length:0};current.end=d;current.length++;}else if(current){if(current.end>=first&&current.start<=last)runs.push(current);current=null;}}
+let worked=0,rested=0,extra=0,sunWork=0;for(let d=first;d<=last;d=shift(d,1)){const rest=isRest(d,override),wk=d.getUTCDay()===0||d.getUTCDay()===6;if(rest){rested++;if(!wk)extra++;}else{worked++;if(d.getUTCDay()===0)sunWork++;}}
+return {bad,worked,rested,extra,sunWork,runs,windows:count};}
+function candidateScore(result,override){const {first,last}=monthBounds(ym.y,ym.m);let score=0;for(const run of result.runs){if(run.length===3)score+=110;else if(run.length===2)score+=11;else if(run.length>=4)score-=100+(run.length-4)*40;}
+let longestWork=0,streak=0;for(let d=shift(first,-6);d<=shift(last,6);d=shift(d,1)){if(isRest(d,override))streak=0;else{streak++;longestWork=Math.max(streak,longestWork);}}score-=Math.max(0,longestWork-5)*30;
+// A small preference for the middle of the month and for Friday/Monday additions.
+for(let d=first;d<=last;d=shift(d,1))if(d.getUTCDay()!==0&&d.getUTCDay()!==6&&isRest(d,override)){if(d.getUTCDay()===5||d.getUTCDay()===1)score+=5;score+=Math.min(d.getUTCDate(),numDays(ym.y,ym.m)+1-d.getUTCDate())*.08;}
+return score;}
+function combinations(arr,n,callback,limit=15000){if(n<0||n>arr.length)return;let count=0;const picked=[];function rec(idx){if(count>=limit)return;if(picked.length===n){count++;callback([...picked]);return;}const needed=n-picked.length;for(let j=idx;j<=arr.length-needed;j++){picked.push(arr[j]);rec(j+1);picked.pop();if(count>=limit)break;}}rec(0);}
+function seededShuffle(arr,seed){const a=arr.slice();let x=seed>>>0;for(let i=a.length-1;i>0;i--){x=(1664525*x+1013904223)>>>0;const j=x%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function makePlan(){noticeText='';const cfg=config(),{first,last}=monthBounds(ym.y,ym.m);const days=[],sundays=[],weekdaysOnly=[];for(let d=first;d<=last;d=shift(d,1)){const k=keyDate(d);days.push(k);if(d.getUTCDay()===0)sundays.push(k);else if(d.getUTCDay()!==6)weekdaysOnly.push(k);}
+if(cfg.suns>sundays.length){noticeText=`この月の日曜日は${sundays.length}日しかないよ。日曜出勤の日数を減らしてね。`;return false;}
+const satWork=days.filter(k=>{const d=dUTC(Number(k.slice(0,4)),Number(k.slice(5,7))-1,Number(k.slice(8,10)));return d.getUTCDay()===6&&data.wishes[k]==='W';});
+const weekOff=weekdaysOnly.length+cfg.suns+satWork.length-cfg.target;
+if(weekOff<0||weekOff>weekdaysOnly.length){noticeText=`この設定では出勤${cfg.target}日にできないよ。日曜出勤の日数か、目標日数を調整してね。`;return false;}
+// Local override: fully regenerate this month, but honor edited adjacent months.
+const base={};days.forEach(k=>{const date=dUTC(Number(k.slice(0,4)),Number(k.slice(5,7))-1,Number(k.slice(8,10)));base[k]=date.getUTCDay()===0||date.getUTCDay()===6?'R':'W';if(date.getUTCDay()===6&&data.wishes[k]==='W')base[k]='W';});
+let best=null,bestScore=-Infinity,considered=0;
+combinations(sundays,cfg.suns,(workedSundays)=>{const withSunday={...base};workedSundays.forEach(k=>withSunday[k]='W');
+const tryWeekdays=(daysOff)=>{const ov={...withSunday};daysOff.forEach(k=>ov[k]='R');if(days.some(k=>data.wishes[k]&&data.wishes[k]!==ov[k]))return;const res=inspect(ov);considered++;if(res.bad.length)return;const sc=candidateScore(res,ov);if(sc>bestScore){best=ov;bestScore=sc;}};
+if(weekOff<=3){combinations(weekdaysOnly,weekOff,tryWeekdays,15000);}else{
+// For unusually high weekday leave counts, sample reproducible subsets to avoid slowing down phones.
+for(let j=0;j<2200;j++){const shuffled=seededShuffle(weekdaysOnly,(ym.y*100+ym.m)*10000+j*73+workedSundays.length*11);tryWeekdays(shuffled.slice(0,weekOff));}
+for(let i=0;i<weekdaysOnly.length;i++){const off=[];for(let j=0;j<weekOff;j++)off.push(weekdaysOnly[(i+j)%weekdaysOnly.length]);tryWeekdays(off);}
+}
+},30);
+if(!best){noticeText='この条件では「連続7日間に休み2日以上」を守れる組み方が見つからなかったよ。日曜出勤の日数を変えるか、前後の月の勤務を確認してね。';return false;}
+Object.assign(data.plans,best);save();noticeText=`✅ ${considered.toLocaleString('ja-JP')}通りまでの候補を調べて、条件を満たすシフトを作ったよ！`;return true;}
+function dateFromKey(k){return dUTC(Number(k.slice(0,4)),Number(k.slice(5,7))-1,Number(k.slice(8,10)));}
+function dayName(k){const d=dateFromKey(k);return `${verbose(d)}(${weekdays[d.getUTCDay()]})`;}
+// Generates adjustments that respect manually chosen days, the work target,
+// fixed Sunday-work count, and EVERY rolling seven-day span (including adjacent months).
+function findAdjustments(){
+ const cfg=config(),{first,last}=monthBounds(ym.y,ym.m);
+ const days=[],sun=[],weekdayDates=[],saturdays=[];
+ for(let d=first;d<=last;d=shift(d,1)){const k=keyDate(d);days.push(k);if(d.getUTCDay()===0)sun.push(k);else if(d.getUTCDay()===6)saturdays.push(k);else weekdayDates.push(k);}
+ const sunForced=sun.filter(k=>data.wishes[k]==='W');
+ const sunOpen=sun.filter(k=>!data.wishes[k]);
+ const satWork=saturdays.filter(k=>data.wishes[k]==='W');
+ const offForced=weekdayDates.filter(k=>data.wishes[k]==='R');
+ const offOpen=weekdayDates.filter(k=>!data.wishes[k]);
+ const sunNeed=cfg.suns-sunForced.length;
+ const weekdayOffNeed=weekdayDates.length+cfg.suns+satWork.length-cfg.target-offForced.length;
+ if(sunNeed<0||sunNeed>sunOpen.length||weekdayOffNeed<0||weekdayOffNeed>offOpen.length)return [];
+ const current=Object.fromEntries(days.map(k=>[k,getState(dateFromKey(k))]));
+ // Fast full boundary check: avoid expensive Date and string allocations per candidate.
+ const start=shift(first,-6),all=[];for(let d=start;d<=shift(last,6);d=shift(d,1))all.push({k:keyDate(d),out:d<first||d>last,rest:isRest(d)});
+ let seen=0;const answers=[];const seenDiffs=new Set();
+ function candidate(sunChosen,offChosen){
+  if(++seen>45000)return;
+  const own={};days.forEach(k=>own[k]='W');
+  saturdays.forEach(k=>own[k]='R');satWork.forEach(k=>own[k]='W');
+  sun.forEach(k=>own[k]='R');sunForced.forEach(k=>own[k]='W');sunChosen.forEach(k=>own[k]='W');
+  offForced.forEach(k=>own[k]='R');offChosen.forEach(k=>own[k]='R');
+  const statuses=all.map(d=>d.out?d.rest:own[d.k]==='R');
+  let count=0;for(let i=0;i<7;i++)count+=statuses[i]?1:0;
+  if(count<2)return;
+  for(let j=7;j<statuses.length;j++){count+=(statuses[j]?1:0)-(statuses[j-7]?1:0);if(count<2)return;}
+  const changed=days.filter(k=>own[k]!==current[k]);
+  if(!changed.length)return;
+  const signature=changed.map(k=>`${k}${own[k]}`).join(',');if(seenDiffs.has(signature))return;seenDiffs.add(signature);
+  const score=candidateScore(inspect(own),own);const result={own,changed,score,work:changed.filter(k=>own[k]==='W'),rest:changed.filter(k=>own[k]==='R')};
+  answers.push(result);
+ }
+ function allComb(arr,n,fn,limit){if(n<0||n>arr.length)return;let made=0;const set=[];function loop(i){if(seen>45000||made>=limit)return;if(set.length===n){made++;fn(set.slice());return;}const need=n-set.length;for(let x=i;x<=arr.length-need;x++){set.push(arr[x]);loop(x+1);set.pop();if(seen>45000||made>=limit)break;}}loop(0);}
+ allComb(sunOpen,sunNeed,(sunChosen)=>{
+  if(weekdayOffNeed<=3){allComb(offOpen,weekdayOffNeed,(offChosen)=>candidate(sunChosen,offChosen),45000);}
+  else {
+   // Exhaustive for up to four weekday leaves, sampled afterward for large configurations.
+   const cap=weekdayOffNeed===4?45000:3000;
+   allComb(offOpen,weekdayOffNeed,(offChosen)=>candidate(sunChosen,offChosen),cap);
+   if(weekdayOffNeed>4){for(let i=0;i<450;i++){const offChosen=seededShuffle(offOpen,(ym.y*200+ym.m)*7000+i*101).slice(0,weekdayOffNeed);candidate(sunChosen,offChosen);}}
+  }
+ },100);
+ answers.sort((a,b)=>a.changed.length-b.changed.length||b.score-a.score);
+ // Favor a useful variety of options rather than several near-identical plans.
+ const chosen=[];const usedWork=new Set();for(const item of answers){const key=item.work.join(',');if(chosen.length&&usedWork.has(key)&&answers.some(x=>x.changed.length===item.changed.length&&!usedWork.has(x.work.join(','))))continue;chosen.push(item);usedWork.add(key);if(chosen.length>=3)break;}
+ return chosen;
+}
+function renderAdvice(res,cfg,errors){
+ const box=byId('advice');
+ const mk=keyMonth(ym.y,ym.m);
+ const wishes=Object.entries(data.wishes).filter(([k,v])=>k.startsWith(mk)&&['R','W'].includes(v));
+ let content='<h3>💡 この日に休むなら？</h3>';
+ if(wishes.length){content+='<p>手動で選んだ日付は優先して調整するよ。間違えて指定した日は解除できるよ。</p><div class="wish-list">'+wishes.map(([k,v])=>`<button type="button" data-unwish="${k}" title="希望の固定を解除">${dayName(k)} ${v==='R'?'希望休':'出勤希望'} ✕</button>`).join('')+'</div>';}
+ if(!errors.length){content+='<div class="empty" style="margin-top:10px">✅ <b>今のシフトで大丈夫！</b> 目標出勤日数も、どの7日間にも2日休みのルールもクリア。別の日に休みたいなら、その日をタップしてみてね。</div>';recommendations=[];}
+ else{
+  if(recommendations.length){
+   content+=`<p>💜 <b>ここを調整すれば大丈夫！</b> 出勤${cfg.target}日と連続7日間の休みルールを両方守れる候補を見つけたよ。おすすめ①の日付はカレンダーにも点線で表示してるよ。</p><div class="proposals">`;
+   recommendations.forEach((p,i)=>{const diff=[...p.rest.map(k=>`<span class="change">🌿 ${dayName(k)} → 休み</span>`),...p.work.map(k=>`<span class="change work">💼 ${dayName(k)} → 出勤</span>`)].join('');
+    content+=`<div class="proposal ${i===0?'best':''}"><h4>おすすめ${i+1} ${i===0?'⭐':''}</h4><div>${diff}</div><p>変更 ${p.changed.length}日分・出勤${cfg.target}日・7日間ルールOK</p><button type="button" data-apply="${i}">この案でシフトを調整する</button></div>`;
+   });content+='</div>';
+  }else{content+='<div class="empty" style="margin-top:10px">⚠️ 今の希望日・日曜出勤回数をすべて守ったままでは、条件を満たす候補が見つからなかったよ。希望日の指定を解除するか、日曜出勤の日数・目標出勤日数を見直してね。</div>';}
+ }
+ box.innerHTML=content;
+}
+function statText(){const res=inspect(),cfg=config();const errors=[];if(res.worked!==cfg.target)errors.push(`出勤が目標${cfg.target}日と違う`);if(res.sunWork!==cfg.suns)errors.push(`日曜出勤が希望${cfg.suns}日と違う`);if(res.bad.length)errors.push(`7日間ルール違反 ${res.bad.length}か所`);return {res,cfg,errors};}
+function render(){const {first,last}=monthBounds(ym.y,ym.m);const c=config();const total=numDays(ym.y,ym.m);rangeIndex=Math.max(0,Math.min(total+5,rangeIndex));const rangeStart=shift(first,rangeIndex-6),rangeEnd=shift(rangeStart,6);const activeKeys=new Set(Array.from({length:7},(_,i)=>keyDate(shift(rangeStart,i))));byId('monthHeading').textContent=`${ym.y}年${ym.m+1}月`;byId('monthPicker').value=keyMonth(ym.y,ym.m);byId('target').value=c.target;byId('sunCount').value=String(c.suns);byId('rangeSlider').max=total+5;byId('rangeSlider').value=rangeIndex;
+let cal='<div class="dow">日</div><div class="dow">月</div><div class="dow">火</div><div class="dow">水</div><div class="dow">木</div><div class="dow">金</div><div class="dow">土</div>';
+const {res,cfg,errors}=statText();recommendations=errors.length?findAdjustments():[];const highlightPlan=recommendations[0];const firstDisplay=shift(first,-first.getUTCDay());const cellCount=Math.ceil((first.getUTCDay()+total)/7)*7;
+for(let i=0;i<cellCount;i++){const d=shift(firstDisplay,i),k=keyDate(d),other=d.getUTCMonth()!==ym.m||d.getUTCFullYear()!==ym.y,weekend=d.getUTCDay()===0||d.getUTCDay()===6,rest=isRest(d),active=activeKeys.has(k);const classes=['day',other?'outside':'',rest?(weekend?'rest':'extra'):(weekend?'workend':''),active?'highlight':'',highlightPlan&&highlightPlan.rest.includes(k)?'idea-rest':'',highlightPlan&&highlightPlan.work.includes(k)?'idea-work':''].join(' ');const status=rest?(weekend?'休み':'追加休'):(weekend?'休日出勤':'出勤');const edge=active?k===keyDate(rangeStart)?'ここから':k===keyDate(rangeEnd)?'ここまで':'':'';cal+=`<button type="button" class="${classes}" data-date="${k}" aria-label="${verbose(d)} ${status} 切替"><span class="num">${d.getUTCDate()}</span><span class="status">${status}</span>${data.wishes[k]?'<span class="wish">希望</span>':''}${highlightPlan&&highlightPlan.changed.includes(k)?`<span class="idea-label">${highlightPlan.rest.includes(k)?'候補:休':'候補:出'}</span>`:''}${edge?`<span class="edge">${edge}</span>`:''}</button>`;}
+byId('calendar').innerHTML=cal;byId('worked').innerHTML=`${res.worked}<small> / 目標${cfg.target}日</small>`;byId('rested').textContent=`${res.rested}日`;byId('extraDays').textContent=`${res.extra}日`;
+byId('rangeTitle').innerHTML=`${verbose(rangeStart)}〜${verbose(rangeEnd)}<small>連続7日間</small>`;
+let count=0,weekHtml='';for(let i=0;i<7;i++){const d=shift(rangeStart,i),rest=isRest(d);count+=rest?1:0;weekHtml+=`<div class="wk ${rest?'rest':''}"><b>${fmt(d)}</b><small>${weekdays[d.getUTCDay()]}</small><em>${rest?'休':'出'}</em></div>`;}byId('weekStrip').innerHTML=weekHtml;
+byId('rangeResult').className=`result ${count<2?'bad':''}`;byId('rangeResult').innerHTML=`<b>${count>=2?'✅':'❌'} 休み ${count}日 / 7日間</b><p>${count>=2?'最低2日休みのルールをクリア！':'この7日間は休みが不足しているよ'}</p>`;
+byId('rangePrev').disabled=rangeIndex===0;byId('rangeNext').disabled=rangeIndex===total+5;byId('leftBoundary').textContent=`← ${shift(first,-6).getUTCMonth()+1}月→${ym.m+1}月`;byId('rightBoundary').textContent=`${ym.m+1}月→${shift(last,6).getUTCMonth()+1}月 →`;
+const summary=byId('validation');summary.className=`summary ${errors.length?'notok':'ok'}`;let badHtml='';if(res.bad.length){badHtml='<div class="badWindows">違反している7日間を表示： '+res.bad.slice(0,8).map(b=>`<button data-window="${b.index}">${verbose(b.start)}〜${verbose(shift(b.start,6))}</button>`).join('')+(res.bad.length>8?' ほかにもあり':'')+'</div>';}
+summary.innerHTML=`<h3>${errors.length?'⚠️ まだ条件を満たしていないよ':'✅ この月に関わる7日間はすべてOK！'}</h3><p>月をまたぐ期間を含め、${res.windows}通りの7日間を確認。${errors.length?errors.join('／'):'出勤目標も達成！'}</p>${badHtml}`;
+const triples=res.runs.filter(r=>r.length===3),others=res.runs.filter(r=>r.length>=4);byId('threeDayInfo').innerHTML=`<div class="note"><b>🌷 連休の予定</b><div class="triples">${triples.length?triples.map(r=>`<span class="triple">3連休：${verbose(r.start)}〜${verbose(r.end)}</span>`).join(''):'<span>3連休なし。自動作成で探してみてね。</span>'}</div>${others.length?`<div style="margin-top:6px">4連休以上：${others.map(r=>verbose(r.start)+'〜'+verbose(r.end)).join('、')}</div>`:''}<div style="margin-top:7px">日曜出勤：${res.sunWork}日</div></div>`;
+renderAdvice(res,cfg,errors);byId('notice').className=`notif ${noticeText?'on':''}`;byId('notice').textContent=noticeText;
+}
+function switchMonth(delta){const n=dUTC(ym.y,ym.m+delta,1);ym={y:n.getUTCFullYear(),m:n.getUTCMonth()};rangeIndex=6;noticeText='';const mk=keyMonth(ym.y,ym.m);if(!Object.keys(data.plans).some(k=>k.startsWith(mk))){makePlan();}render();}
+byId('prevMonth').addEventListener('click',()=>switchMonth(-1));byId('nextMonth').addEventListener('click',()=>switchMonth(1));
+byId('monthPicker').addEventListener('change',e=>{if(!/^\d{4}-\d{2}$/.test(e.target.value))return;const [y,m]=e.target.value.split('-').map(Number);if(y<1900||y>2100||m<1||m>12)return;ym={y,m:m-1};rangeIndex=6;noticeText='';if(!Object.keys(data.plans).some(k=>k.startsWith(keyMonth(y,m-1))))makePlan();render();});
+byId('target').addEventListener('change',e=>{const v=Math.round(Number(e.target.value));if(!Number.isFinite(v)||v<0||v>numDays(ym.y,ym.m)){noticeText='目標の出勤日数は0〜月の日数で入力してね。';render();return;}setConfig({...config(),target:v});noticeText='目標を変更したよ。「自動作成」を押してね。';render();});
+byId('sunCount').addEventListener('change',e=>{setConfig({...config(),suns:Number(e.target.value)});noticeText='日曜出勤の希望を変更したよ。「自動作成」を押してね。';render();});
+byId('generate').addEventListener('click',()=>{makePlan();rangeIndex=6;render();});
+byId('calendar').addEventListener('click',e=>{const cell=e.target.closest('[data-date]');if(!cell)return;const k=cell.dataset.date;const d=dUTC(Number(k.slice(0,4)),Number(k.slice(5,7))-1,Number(k.slice(8,10)));if(d.getUTCMonth()!==ym.m||d.getUTCFullYear()!==ym.y){ym={y:d.getUTCFullYear(),m:d.getUTCMonth()};rangeIndex=6;}const newState=isRest(d)?'W':'R';data.plans[k]=newState;data.wishes[k]=newState;save();noticeText=newState==='R'?'希望休を追加したよ！ 下の「この日に休むなら？」に調整候補を表示するね。':'出勤日に変更したよ。ほかの希望日と合わせて調整案を確認してね。';render();});
+byId('advice').addEventListener('click',e=>{const apply=e.target.closest('[data-apply]');if(apply){const p=recommendations[Number(apply.dataset.apply)];if(!p)return;Object.assign(data.plans,p.own);save();noticeText='✅ 提案を反映したよ！ 出勤日数・7日間ルールも確認済み。';render();return;}const un=e.target.closest('[data-unwish]');if(un){delete data.wishes[un.dataset.unwish];save();noticeText='希望の固定を解除したよ。現在の勤務日は変えていないよ。';render();}});
+byId('rangeSlider').addEventListener('input',e=>{rangeIndex=Number(e.target.value);render();});byId('rangePrev').addEventListener('click',()=>{rangeIndex--;render();});byId('rangeNext').addEventListener('click',()=>{rangeIndex++;render();});byId('leftBoundary').addEventListener('click',()=>{rangeIndex=0;render();});byId('rightBoundary').addEventListener('click',()=>{rangeIndex=numDays(ym.y,ym.m)+5;render();});
+byId('validation').addEventListener('click',e=>{const target=e.target.closest('[data-window]');if(target){rangeIndex=Number(target.dataset.window);render();byId('rangeResult').scrollIntoView({behavior:'smooth',block:'nearest'});}});
+byId('backup').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({...data,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`おやすみ設計室_バックアップ_${keyMonth(ym.y,ym.m)}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);noticeText='バックアップを書き出したよ！大切に保存してね。';render();});
+byId('restore').addEventListener('click',()=>byId('importFile').click());byId('importFile').addEventListener('change',async e=>{const file=e.target.files&&e.target.files[0];if(!file)return;try{const incoming=JSON.parse(await file.text());if(incoming.version!==1||!incoming.plans||typeof incoming.plans!=='object'||!incoming.configs||typeof incoming.configs!=='object')throw new Error('format');if(!confirm('現在の保存内容をバックアップの内容で置き換えるよ。続ける？'))return;data={version:1,plans:incoming.plans,configs:incoming.configs,wishes:incoming.wishes&&typeof incoming.wishes==='object'?incoming.wishes:{}};save();noticeText='バックアップを読み込んだよ！';render();}catch(_){noticeText='バックアップを読み込めなかったよ。おやすみ設計室で保存したJSONを選んでね。';render();}finally{e.target.value='';}});
+byId('reset').addEventListener('click',()=>{if(!confirm(`${ym.y}年${ym.m+1}月の変更を消して、土日休みに戻すよ。いい？`))return;const mk=keyMonth(ym.y,ym.m);for(const k of Object.keys(data.plans))if(k.startsWith(mk))delete data.plans[k];for(const k of Object.keys(data.wishes))if(k.startsWith(mk))delete data.wishes[k];save();noticeText='この月を土日休みに戻したよ。目標の出勤日数に合わせるには自動作成してね。';render();});
+byId('print').addEventListener('click',()=>window.print());
+// First run: begin with the November 2026 situation discussed in the chat.
+if(!Object.keys(data.plans).some(k=>k.startsWith('2026-11')))makePlan();render();
+})();
+</script>
+</body>
+</html>
